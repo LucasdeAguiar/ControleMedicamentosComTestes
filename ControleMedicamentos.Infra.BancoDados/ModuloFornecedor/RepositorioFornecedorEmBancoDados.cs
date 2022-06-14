@@ -107,20 +107,22 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloFornecedor
         }
 
 
-        public ValidationResult Editar(Fornecedor fornecedor)
+        public ValidationResult Editar(Fornecedor registro)
         {
             var validador = new ValidadorFornecedor();
 
-            var resultadoValidacao = validador.Validate(fornecedor);
+            var resultadoValidacao = validador.Validate(registro);
 
             if (resultadoValidacao.IsValid == false)
                 return resultadoValidacao;
+
+            var x = SelecionarPorNumero(registro.Id);
 
             SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
 
             SqlCommand comandoEdicao = new SqlCommand(sqlEditar, conexaoComBanco);
 
-            ConfigurarParametrosFornecedor(fornecedor, comandoEdicao);
+            ConfigurarParametrosFornecedor(registro, comandoEdicao);
 
             conexaoComBanco.Open();
             comandoEdicao.ExecuteNonQuery();

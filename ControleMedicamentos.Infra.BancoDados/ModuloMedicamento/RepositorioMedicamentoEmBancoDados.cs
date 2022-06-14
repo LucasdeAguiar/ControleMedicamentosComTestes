@@ -23,24 +23,25 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
         #region SQL Queries
 
         private const string sqlInserir =
-           @"INSERT INTO [TBMEDICAMENTO]
-                (
-                    [NOME],       
-                    [DESCRICAO], 
-                    [LOTE],
-                    [VALIDADE],                    
-                    [QUANTIDADEDISPONIVEL],                                                           
-                    [FORNECEDOR_ID]       
-                )
-            VALUES
-                (
-                    @NOME,
-                    @DESCRICAO,
-                    @LOTE,
-                    @VALIDADE,
-                    @QUANTIDADEDISPONIVEL,
-                    @FORNECEDOR_ID
-                ); SELECT SCOPE_IDENTITY();";
+            @"INSERT INTO 
+                TBMEDICAMENTO
+                    (
+                        NOME,
+                        DESCRICAO,
+                        LOTE,
+                        VALIDADE,
+                        QUANTIDADEDISPONIVEL,
+                        FORNECEDOR_ID
+                    )
+                        VALUES
+                    (
+                        @NOME,
+                        @DESCRICAO,
+                        @LOTE,
+                        @VALIDADE,
+                        @QUANTIDADEDISPONIVEL,
+                        @FORNECEDOR_ID
+                    ); SELECT SCOPE_IDENTITY();";
 
         private const string sqlEditar =
             @" UPDATE [TBMEDICAMENTO]
@@ -102,11 +103,11 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
         #endregion
 
 
-        public ValidationResult Inserir(Medicamento novoRegistro)
+        public ValidationResult Inserir(Medicamento novoMedicamento)
         {
             var validador = new ValidadorMedicamento();
 
-            var resultadoValidacao = validador.Validate(novoRegistro);
+            var resultadoValidacao = validador.Validate(novoMedicamento);
 
             if (resultadoValidacao.IsValid == false)
                 return resultadoValidacao;
@@ -115,11 +116,11 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
 
             SqlCommand comandoInsercao = new SqlCommand(sqlInserir, conexaoComBanco);
 
-            ConfigurarParametrosMedicamento(novoRegistro, comandoInsercao);
+            ConfigurarParametrosMedicamento(novoMedicamento, comandoInsercao);
 
             conexaoComBanco.Open();
             var id = comandoInsercao.ExecuteScalar();
-            novoRegistro.Id = Convert.ToInt32(id);
+            novoMedicamento.Id = Convert.ToInt32(id);
 
             conexaoComBanco.Close();
 
@@ -222,47 +223,49 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
             comando.Parameters.AddWithValue("LOTE", medicamento.Lote);
             comando.Parameters.AddWithValue("VALIDADE", medicamento.Validade);
             comando.Parameters.AddWithValue("QUANTIDADEDISPONIVEL", medicamento.QuantidadeDisponivel);
-
             comando.Parameters.AddWithValue("FORNECEDOR_ID", medicamento.Fornecedor.Id);
         }
 
+       
+
         private Medicamento ConverterParaMedicamento(SqlDataReader leitorMedicamento)
         {
-            var id = Convert.ToInt32(leitorMedicamento["ID"]);
-            var nome = Convert.ToString(leitorMedicamento["NOME"]);
-            var descricao = Convert.ToString(leitorMedicamento["DESCRICAO"]);
-            var lote = Convert.ToString(leitorMedicamento["LOTE"]);
-            var validade = Convert.ToDateTime(leitorMedicamento["VALIDADE"]);
-            var quantidadeDisponivel = Convert.ToInt32(leitorMedicamento["QUANTIDADEDISPONIVEL"]);
+            int id = Convert.ToInt32(leitorMedicamento["ID"]);
+            string nome_medicamento = Convert.ToString(leitorMedicamento["NOME"]);
+            string descricao = Convert.ToString(leitorMedicamento["DESCRICAO"]);
+            string lote = Convert.ToString(leitorMedicamento["LOTE"]);
+            DateTime validade = Convert.ToDateTime(leitorMedicamento["VALIDADE"]);
+            int qtdDisponivel = Convert.ToInt32(leitorMedicamento["QUANTIDADEDISPONIVEL"]);
 
-            Medicamento medicamento = new Medicamento();
-            medicamento.Id = id;
-            medicamento.Nome = nome;
-            medicamento.Descricao = descricao;
-            medicamento.Lote = lote;
-            medicamento.Validade = validade;
-            medicamento.QuantidadeDisponivel = quantidadeDisponivel;
+            int fornecedor_id = Convert.ToInt32(leitorMedicamento["FORNECEDOR_ID"]);
+            string nome_fornecedor = Convert.ToString(leitorMedicamento["NOME"]);
+            string telefone = Convert.ToString(leitorMedicamento["TELEFONE"]);
+            string email = Convert.ToString(leitorMedicamento["EMAIL"]);
+            string cidade = Convert.ToString(leitorMedicamento["CIDADE"]);
+            string estado = Convert.ToString(leitorMedicamento["ESTADO"]);
 
-            var idFornecedor = Convert.ToInt32(leitorMedicamento["FORNECEDOR_ID"]);
-            var nomeFornecedor = Convert.ToString(leitorMedicamento["NOME"]);
-            var telefoneFornecedor = Convert.ToString(leitorMedicamento["TELEFONE"]);
-            var emailFornecedor = Convert.ToString(leitorMedicamento["EMAIL"]);
-            var cidadeFornecedor = Convert.ToString(leitorMedicamento["CIDADE"]);
-            var estadoFornecedor = Convert.ToString(leitorMedicamento["ESTADO"]);
+            RepositorioFornecedorEmBancoDados repositorioFornecedor = new RepositorioFornecedorEmBancoDados();
 
-            medicamento.Fornecedor = new Fornecedor
+            var medicamento = new Medicamento
             {
-                Id = idFornecedor,
-                Nome = nomeFornecedor,
-                Telefone = telefoneFornecedor,
-                Email = emailFornecedor,
-                Cidade = cidadeFornecedor,
-                Estado = estadoFornecedor
+                Id = id,
+                Nome = nome_medicamento,
+                Descricao = descricao,
+                Lote = lote,
+                Validade = validade,
+                QuantidadeDisponivel = qtdDisponivel,
+                Fornecedor = new Fornecedor()
+                {
+                    Id = fornecedor_id,
+                    Nome = nome_fornecedor,
+                    Telefone = telefone,
+                    Email = email,
+                    Cidade = cidade,
+                    Estado = estado,
+                }
             };
-
 
             return medicamento;
         }
-
     }
 }

@@ -13,7 +13,27 @@ namespace ControleMedicamentos.Dominio.ModuloMedicamento
 
         public ValidadorMedicamento()
         {
-            
+           
+
+            RuleFor(x => x.Nome)
+                .NotNull().NotEmpty();
+
+            RuleFor(x => x.Descricao)
+                .NotNull().NotEmpty();
+
+            RuleFor(x => x.Lote)
+                .NotNull().NotEmpty();
+
+            RuleFor(x => x.Validade)
+                .NotEqual(DateTime.MinValue)
+                .WithMessage("O campo Validade é obrigatório");
+
+            RuleFor(x => x.QuantidadeDisponivel)
+                .GreaterThan(0)
+                .WithMessage("Quantidade deve conter mais do que 0"); 
+
+            RuleFor(x => x.Fornecedor)
+                .NotNull().NotEmpty();
 
         }
 

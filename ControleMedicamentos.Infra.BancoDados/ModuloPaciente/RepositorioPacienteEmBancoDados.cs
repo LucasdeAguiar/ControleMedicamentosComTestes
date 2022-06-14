@@ -62,6 +62,8 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloPaciente
         #endregion
 
 
+
+
         public ValidationResult Inserir(Paciente novoPaciente)
         {
             var validador = new ValidadorPaciente();
@@ -87,20 +89,22 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloPaciente
         }
 
 
-        public ValidationResult Editar(Paciente paciente)
+        public ValidationResult Editar(Paciente registro)
         {
             var validador = new ValidadorPaciente();
 
-            var resultadoValidacao = validador.Validate(paciente);
+            var resultadoValidacao = validador.Validate(registro);
 
             if (resultadoValidacao.IsValid == false)
                 return resultadoValidacao;
+
+            var x = SelecionarPorNumero(registro.Id);
 
             SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
 
             SqlCommand comandoEdicao = new SqlCommand(sqlEditar, conexaoComBanco);
 
-            ConfigurarParametrosPaciente(paciente, comandoEdicao);
+            ConfigurarParametrosPaciente(registro, comandoEdicao);
 
             conexaoComBanco.Open();
             comandoEdicao.ExecuteNonQuery();

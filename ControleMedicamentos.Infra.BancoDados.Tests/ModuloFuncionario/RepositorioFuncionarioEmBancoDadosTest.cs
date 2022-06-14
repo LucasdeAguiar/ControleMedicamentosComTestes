@@ -39,26 +39,25 @@ namespace ControleMedicamentos.Infra.BancoDados.Tests.ModuloFuncionario
         }
 
 
+       
+
         [TestMethod]
-        public void Deve_editar_Funcionario()
+        public void Deve_editar_funcionario()
         {
             //arrange                      
             repositorio.Inserir(funcionario);
 
             //action
-
-            funcionario.Nome = "Lucas";
-            funcionario.Login = "lucasaguiar@outlook.com";
-            funcionario.Senha = "lucas123";
+            funcionario.Nome = "João";
+            funcionario.Login = "joaosilva@gmail.com";
+            funcionario.Senha = "123456789";
             repositorio.Editar(funcionario);
 
             //assert
             var funcionarioEncontrado = repositorio.SelecionarPorNumero(funcionario.Id);
 
             Assert.IsNotNull(funcionarioEncontrado);
-            Assert.AreEqual(funcionario.Nome, funcionarioEncontrado.Nome);
-            Assert.AreEqual(funcionario.Login, funcionarioEncontrado.Login);
-            Assert.AreEqual(funcionario.Senha, funcionarioEncontrado.Senha);
+            Assert.AreEqual(funcionario.Id, funcionarioEncontrado.Id);
         }
 
         [TestMethod]
@@ -87,7 +86,7 @@ namespace ControleMedicamentos.Infra.BancoDados.Tests.ModuloFuncionario
 
             //assert
             Assert.IsNotNull(pacienteEncontrado);
-            Assert.AreEqual(funcionario, pacienteEncontrado);
+            Assert.AreEqual(funcionario.Nome, pacienteEncontrado.Nome);
         }
 
         //OBS: CASO O MÉTODO SEJA EXECUTADO COM DADOS JÁ EXISTENTES NO BANCO,

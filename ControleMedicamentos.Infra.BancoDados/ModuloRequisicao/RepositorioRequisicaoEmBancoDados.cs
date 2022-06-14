@@ -243,6 +243,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
 
         private Requisicao ConverterParaRequisicao(SqlDataReader leitorRequisicao)
         {
+
             var id = Convert.ToInt32(leitorRequisicao["ID"]);
             var funcionarioId = Convert.ToInt32(leitorRequisicao["FUNCIONARIO_ID"]);
             var pacienteId = Convert.ToInt32(leitorRequisicao["PACIENTE_ID"]);

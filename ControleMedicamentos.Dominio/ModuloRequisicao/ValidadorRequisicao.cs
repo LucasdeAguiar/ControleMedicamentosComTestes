@@ -13,13 +13,16 @@ namespace ControleMedicamentos.Dominio.ModuloRequisicao
 
         public ValidadorRequisicao()
         {
-            RuleFor(x => x.Medicamento)
+            RuleFor(x => x.QtdMedicamento)
+                .GreaterThan(0)
+                .WithMessage("O campo quantidade deve ser maior que 0");
+
+            RuleFor(x => x.Data)
+                 .NotEqual(DateTime.MinValue)
+                 .WithMessage("O campo Data é obrigatório");
+
+            RuleFor(x => x.Paciente.Nome)
                 .NotNull().NotEmpty();
-
-            RuleFor(x => x.Paciente)
-                .NotNull().NotEmpty();
-
-
 
         }
     }
