@@ -222,7 +222,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloFornecedor
 
         private static void ConfigurarParametrosFornecedor(Fornecedor novoFornecedor, SqlCommand comando)
         {
-            comando.Parameters.AddWithValue("NUMERO", novoFornecedor.Id);
+            comando.Parameters.AddWithValue("ID", novoFornecedor.Id);
             comando.Parameters.AddWithValue("NOME", novoFornecedor.Nome);
             comando.Parameters.AddWithValue("TELEFONE", novoFornecedor.Telefone);
             comando.Parameters.AddWithValue("EMAIL", novoFornecedor.Email);

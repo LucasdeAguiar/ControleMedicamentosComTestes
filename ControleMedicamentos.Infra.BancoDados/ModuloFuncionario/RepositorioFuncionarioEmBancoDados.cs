@@ -204,7 +204,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloFuncionario
 
         private static void ConfigurarParametrosFuncionario(Funcionario novoFuncionario, SqlCommand comando)
         {
-            comando.Parameters.AddWithValue("NUMERO", novoFuncionario.Id);
+            comando.Parameters.AddWithValue("ID", novoFuncionario.Id);
             comando.Parameters.AddWithValue("NOME", novoFuncionario.Nome);
             comando.Parameters.AddWithValue("LOGIN", novoFuncionario.Login);
             comando.Parameters.AddWithValue("SENHA", novoFuncionario.Senha);

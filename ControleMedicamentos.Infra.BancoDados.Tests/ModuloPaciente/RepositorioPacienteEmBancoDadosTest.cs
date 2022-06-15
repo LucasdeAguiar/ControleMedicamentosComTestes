@@ -42,6 +42,8 @@ namespace ControleMedicamentos.Infra.BancoDados.Tests.ModuloPaciente
         [TestMethod]
         public void Deve_editar_paciente()
         {
+            
+
             //arrange                      
             repositorio.Inserir(paciente);
 
@@ -57,6 +59,7 @@ namespace ControleMedicamentos.Infra.BancoDados.Tests.ModuloPaciente
             Assert.IsNotNull(pacienteEncontrado);
             Assert.AreEqual(paciente.Nome, pacienteEncontrado.Nome);
             Assert.AreEqual(paciente.CartaoSUS, pacienteEncontrado.CartaoSUS);
+            
         }
         
 
